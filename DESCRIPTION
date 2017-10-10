@@ -1,6 +1,6 @@
 Package: hazer
 Title: Identifying Foggy and Cloudy Images by Quantifying Hazeness
-Version: 0.0.0.9000
+Version: 1.0.1
 Authors@R: person("Bijan", "Seyednasrollah", email = "bijan.s.nasr@gmail.com", role = c("aut", "cre"))
 Description: The hazer packages, provides few functions to estimate hazeness based on RGB bands. It returns a hazeness factor, varying from 0 to 1, as metric for fogginess and cloudiness. The library contains few functions to estimate brighness and darkness raster of and RGB image.
 Depends: R (>= 3.4.1)
@@ -8,3 +8,8 @@ License: MIT License
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
+Date: 2017-10-10
+URL: http://doi.org/10.5281/zenodo.1008568
+Suggests:
+    jpeg
+BugReports: https://github.com/bnasr/hazer/issues
