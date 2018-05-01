@@ -2,7 +2,7 @@
 % Please edit documentation in R/getHazeFactor.R
 \name{getHazeFactor}
 \alias{getHazeFactor}
-\title{The contrast map of an image (0 to 1).}
+\title{The haze factor for a given RGB array.}
 \usage{
 getHazeFactor(rgbArray, mu = 5.1, nu = 2.9, sigma = 0.2461)
 }
@@ -16,10 +16,10 @@ getHazeFactor(rgbArray, mu = 5.1, nu = 2.9, sigma = 0.2461)
 \item{sigma}{function parameter}
 }
 \value{
-a numeric matrix (W x H) giving the contrast for each pixel of the image.
+a numeric value as the haze factor
 }
 \description{
-The contrast map of an image (0 to 1).
+The haze factor for a given RGB array.
 }
 \examples{
 library(jpeg)

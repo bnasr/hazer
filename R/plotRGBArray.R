@@ -1,9 +1,9 @@
-#' The contrast map of an image (0 to 1).
+#' Plotting an RGB array on the graphics.
 #'
 #' @param rgbArray RGB array (W x H x 3) where the third dimension contains R, G and B channels, values varying from 0 to 1.
 #' @param xlim range of the x axis.
 #' @param ylim range of the y axis.
-#' @param bty bty value to pass to graphics
+#' @param bty bty value to pass to the graphics
 #' @return a rasterImage output plotted on the base R graphics.
 #' @seealso \code{\link{plotRGBArray}} wraps the \code{graphics::rasterImage} function
 #' @importFrom graphics rasterImage plot

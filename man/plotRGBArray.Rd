@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotRGBArray.R
 \name{plotRGBArray}
 \alias{plotRGBArray}
-\title{The contrast map of an image (0 to 1).}
+\title{Plotting an RGB array on the graphics.}
 \usage{
 plotRGBArray(rgbArray, xlim = c(0, 1), ylim = c(0, 1), bty = "o")
 }
@@ -13,13 +13,13 @@ plotRGBArray(rgbArray, xlim = c(0, 1), ylim = c(0, 1), bty = "o")
 
 \item{ylim}{range of the y axis.}
 
-\item{bty}{bty value to pass to graphics}
+\item{bty}{bty value to pass to the graphics}
 }
 \value{
 a rasterImage output plotted on the base R graphics.
 }
 \description{
-The contrast map of an image (0 to 1).
+Plotting an RGB array on the graphics.
 }
 \examples{
 library(jpeg)

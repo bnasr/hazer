@@ -10,7 +10,7 @@ getBrightness(rgbArray)
 \item{rgbArray}{RGB array (W x H x 3) where the third dimension contains R, G and B channels, values varying from 0 to 1.}
 }
 \value{
-a numeric matrix (W x H) giving the brighness for each pixel of the image.
+a numeric matrix (W x H) giving the brightness for each pixel of the image.
 }
 \description{
 The brighness map of an image (0 to 1).

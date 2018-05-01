@@ -1,10 +1,10 @@
-#' The contrast map of an image (0 to 1).
+#' The haze factor for a given RGB array.
 #'
 #' @param rgbArray RGB array (W x H x 3) where the third dimension contains R, G and B channels, values varying from 0 to 1.
 #' @param mu function parameter
 #' @param nu function parameter
 #' @param sigma function parameter
-#' @return a numeric matrix (W x H) giving the contrast for each pixel of the image.
+#' @return a numeric value as the haze factor
 #' @seealso \code{\link{getDarkness}}, \code{\link{getBrightness}} and \code{\link{getContrast}}
 #' @export
 #' @examples
