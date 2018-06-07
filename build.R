@@ -11,6 +11,7 @@ system('mkdir toCRAN', ignore.stderr = TRUE)
 system(paste0('rm ', basename(getwd()), '*.tar.gz'), ignore.stderr = TRUE)
 
 # create('~/Projects/hazer/')
+# devtools::use_testthat()
 devtools::document()
 system('cp -r R man DESCRIPTION NAMESPACE LICENSE inst toCRAN')
 devtools::install(pkg = 'toCRAN')
