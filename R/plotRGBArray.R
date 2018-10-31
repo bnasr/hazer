@@ -3,7 +3,7 @@
 #' @param rgbArray RGB array (W x H x 3) where the third dimension contains R, G and B channels, values varying from 0 to 1.
 #' @param xlim range of the x axis.
 #' @param ylim range of the y axis.
-#' @param bty bty value to pass to the graphics
+#' @param ... graphical parameters passed to the plot function
 #' @return a rasterImage output plotted on the base R graphics.
 #' @seealso \code{\link{plotRGBArray}} wraps the \code{graphics::rasterImage} function
 #' @importFrom graphics rasterImage plot
@@ -12,13 +12,14 @@
 #' library(jpeg)
 #' img <- readJPEG(system.file("img", "Rlogo.jpg", package="jpeg"))
 #' plotRGBArray(img)
-plotRGBArray <- function(rgbArray, xlim = c(0,1), ylim = c(0,1),  bty = 'o'){
+plotRGBArray <- function(rgbArray, xlim = c(0,1), ylim = c(0,1), ...){
 
   plot(NA,
        xlim = xlim, ylim = ylim,
        xaxt = 'n', yaxt = 'n',
+       xaxs = 'i', yaxs = 'i',
        xlab='', ylab='',
-       bty = bty)
+       ... )
 
   rasterImage(rgbArray,
               xlim[1], ylim[1],

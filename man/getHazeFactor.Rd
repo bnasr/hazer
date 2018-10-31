@@ -16,7 +16,7 @@ getHazeFactor(rgbArray, mu = 5.1, nu = 2.9, sigma = 0.2461)
 \item{sigma}{function parameter}
 }
 \value{
-a numeric value as the haze factor
+a list of two numeric values:haze as haze degree and A0 as the global atmospheric light
 }
 \description{
 The haze factor for a given RGB array.
@@ -46,6 +46,7 @@ mtext(text = 'Brightness', side = 3, line = -2, adj = 0.05, font = 2, col = 'red
 
 plotRGBArray(c)
 mtext(text = 'Contrast', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')
+
 }
 \seealso{
 \code{\link{getDarkness}}, \code{\link{getBrightness}} and \code{\link{getContrast}}

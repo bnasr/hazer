@@ -4,7 +4,7 @@
 #' @param mu function parameter
 #' @param nu function parameter
 #' @param sigma function parameter
-#' @return a numeric value as the haze factor
+#' @return a list of two numeric values:haze as haze degree and A0 as the global atmospheric light
 #' @seealso \code{\link{getDarkness}}, \code{\link{getBrightness}} and \code{\link{getContrast}}
 #' @export
 #' @examples
@@ -32,7 +32,7 @@
 #'
 #' plotRGBArray(c)
 #' mtext(text = 'Contrast', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')
-
+#'
 getHazeFactor <- function(rgbArray, mu = 5.1, nu = 2.9, sigma = .2461){
 
   dI <- getDarkness(rgbArray)

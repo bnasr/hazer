@@ -4,7 +4,7 @@
 \alias{plotRGBArray}
 \title{Plotting an RGB array on the graphics.}
 \usage{
-plotRGBArray(rgbArray, xlim = c(0, 1), ylim = c(0, 1), bty = "o")
+plotRGBArray(rgbArray, xlim = c(0, 1), ylim = c(0, 1), ...)
 }
 \arguments{
 \item{rgbArray}{RGB array (W x H x 3) where the third dimension contains R, G and B channels, values varying from 0 to 1.}
@@ -13,7 +13,7 @@ plotRGBArray(rgbArray, xlim = c(0, 1), ylim = c(0, 1), bty = "o")
 
 \item{ylim}{range of the y axis.}
 
-\item{bty}{bty value to pass to the graphics}
+\item{...}{graphical parameters passed to the plot function}
 }
 \value{
 a rasterImage output plotted on the base R graphics.
