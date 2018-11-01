@@ -19,8 +19,8 @@ test_that("test brightness, darkness and contrast", {
 })
 
 test_that("test the haze", {
-  expect_equal(floor(h$haze*1000), 224)
-  expect_equal(floor(h$A0*1000), 712)
+  expect_equal(floor(h$haze*1000), ifelse(tolower(Sys.info()[[1]])!='linux', 225, 224))
+  expect_equal(floor(h$A0*1000), ifelse(tolower(Sys.info()[[1]])!='linux', 710, 712))
 })
 
 test_that("test the plot", {
