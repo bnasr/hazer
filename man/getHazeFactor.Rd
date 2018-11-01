@@ -35,8 +35,8 @@ par(mfcol = c(2, 2), mar = c(0.5, 0.5, 0.5, 0.5))
 
 plotRGBArray(img)
 mtext(text = 'RGB', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')
-mtext(text = paste0('Hazeness: ', signif(h$haze, 2)), side = 1, line = -2, adj = 0.05)
-mtext(text = paste0('A0: ', signif(h$A0, 2)), side = 1, line = -1, adj = 0.05)
+mtext(text = paste0('Hazeness: ', signif(h[1], 2)), side = 1, line = -2, adj = 0.05)
+mtext(text = paste0('A0: ', signif(h[2], 2)), side = 1, line = -1, adj = 0.05)
 
 plotRGBArray(d)
 mtext(text = 'Darkness', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')

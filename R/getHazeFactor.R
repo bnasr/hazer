@@ -21,8 +21,8 @@
 #'
 #' plotRGBArray(img)
 #' mtext(text = 'RGB', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')
-#' mtext(text = paste0('Hazeness: ', signif(h$haze, 2)), side = 1, line = -2, adj = 0.05)
-#' mtext(text = paste0('A0: ', signif(h$A0, 2)), side = 1, line = -1, adj = 0.05)
+#' mtext(text = paste0('Hazeness: ', signif(h[1], 2)), side = 1, line = -2, adj = 0.05)
+#' mtext(text = paste0('A0: ', signif(h[2], 2)), side = 1, line = -1, adj = 0.05)
 #'
 #' plotRGBArray(d)
 #' mtext(text = 'Darkness', side = 3, line = -2, adj = 0.05, font = 2, col = 'red')
@@ -63,5 +63,5 @@ getHazeFactor <- function(rgbArray, mu = 5.1, nu = 2.9, sigma = .2461){
 
   w[is.nan(w)] <- NA
 
-  list(haze=w, A0=A0)
+  c(haze=w, A0=A0)
 }
