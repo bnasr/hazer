@@ -7,6 +7,7 @@ knitr::opts_chunk$set(
 ## ----required libraries--------------------------------------------------
 library(hazer)
 library(jpeg)
+library(data.table)
 
 ## ----read example, fig.show='hold', fig.height=5, fig.width=6.5----------
 #read the path to the example image
@@ -104,4 +105,59 @@ hist(contrast_mat)
 haze_degree <- getHazeFactor(rgb_array)
 
 print(haze_degree)
+# note that the values might be slightly differnt due to rounding errors on different platforms
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # set up the input image
+#  # images_dir <- '/path/to/image/directory/'
+#  
+#  # get a list of all .jpg files in the directory
+#  pointreyes_images <- dir(path = images_dir,
+#                           pattern = '*.jpg',
+#                           ignore.case = TRUE,
+#                           full.names = TRUE)
+#  
+#  
+#  
+#  ## 1) using a for loop
+#  # number of images
+#  n <- length(pointreyes_images)
+#  
+#  # an empty matrix to fill with haze and A0 values
+#  haze_mat <- data.table()
+#  
+#  pb <- txtProgressBar(0, n, style = 3)
+#  
+#  for(i in 1:n) {
+#    image_path <- pointreyes_images[i]
+#    img <- jpeg::readJPEG(image_path)
+#    haze <- getHazeFactor(img)
+#  
+#    haze_mat <- rbind(haze_mat,
+#                      data.table(file = image_path,
+#                                 haze = haze[1],
+#                                 A0 = haze[2]))
+#  
+#    setTxtProgressBar(pb, i)
+#  }
+#  
+#  
+#  haze_mat[haze>0.4,foggy:=TRUE]
+#  haze_mat[haze<=0.4,foggy:=FALSE]
+#  
+#  haze_mat
+#  
+#  # move the foggy images to a new directory
+#  foggy_dir <-   '/path/to/foggy/images/directory/'
+#  file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
+#  file.remove(haze_mat[foggy==TRUE,file])
+#  
+#  ## 1) using the lapply function
+#  # loading all the images as a list of arrays
+#  img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
+#  
+#  # getting the haze value for the list
+#  haze_list <- lapply(img_list, FUN = getHazeFactor)
+#  
+#  
 

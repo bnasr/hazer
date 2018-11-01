@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 ```{r required libraries }
 library(hazer)
 library(jpeg)
+library(data.table)
 ```
 
 This vignette exaplains how to 1) perform basic image procssing and 2) estimating image haziness as an indication of fog, cloud or other natural or artificial factors.
@@ -143,12 +144,72 @@ hist(contrast_mat)
 ## Image fogginess and haziness
 Haziness of an image can be estimated using the `getHazeFactor` function. This function is based on the method described in <a href="https://www.omicsonline.org/open-access/detecting-foggy-images-and-estimating-the-haze-degree-factor-jcsb.1000226.pdf">Mao et al. (2014)</a>. The technique was originally developed to for "detecting foggy images and estimating the haze degree factor" for a wide range of outdoor images.
 
-The function returns a list of two numeric values: 1) haze as the haze degree and A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.
+The function returns a list of two numeric values: (1) haze as the haze degree and (2) A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.
 
 ```{r haze, fig.show='hold', fig.height=5, fig.width=6.5}
 #extracting the haze matrix
 haze_degree <- getHazeFactor(rgb_array)
 
 print(haze_degree)
+# note that the values might be slightly differnt due to rounding errors on different platforms
 ```
+
+#### Working with a set of images
+We can use `for` loops or the `lapply` functions to extract the haze values for a stack of images. 
+
+```{r, eval=FALSE}
+# set up the input image
+# images_dir <- '/path/to/image/directory/'
+
+# get a list of all .jpg files in the directory
+pointreyes_images <- dir(path = images_dir, 
+                         pattern = '*.jpg',
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+
+
+## 1) using a for loop
+# number of images
+n <- length(pointreyes_images)
+
+# an empty matrix to fill with haze and A0 values
+haze_mat <- data.table()
+
+pb <- txtProgressBar(0, n, style = 3)
+
+for(i in 1:n) {
+  image_path <- pointreyes_images[i]
+  img <- jpeg::readJPEG(image_path)
+  haze <- getHazeFactor(img)
+  
+  haze_mat <- rbind(haze_mat, 
+                    data.table(file = image_path, 
+                               haze = haze[1], 
+                               A0 = haze[2]))
+  
+  setTxtProgressBar(pb, i)
+}
+
+
+haze_mat[haze>0.4,foggy:=TRUE]
+haze_mat[haze<=0.4,foggy:=FALSE]
+
+haze_mat
+
+# move the foggy images to a new directory
+foggy_dir <-   '/path/to/foggy/images/directory/'
+file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
+file.remove(haze_mat[foggy==TRUE,file])
+
+## 1) using the lapply function
+# loading all the images as a list of arrays
+img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
+
+# getting the haze value for the list
+haze_list <- lapply(img_list, FUN = getHazeFactor)
+
+
+```
+
 

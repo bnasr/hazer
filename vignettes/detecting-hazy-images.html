@@ -12,7 +12,7 @@
 
 <meta name="author" content="Bijan Seyednasrollah" />
 
-<meta name="date" content="2018-10-31" />
+<meta name="date" content="2018-11-01" />
 
 <title>Detecting hazy images using hazer</title>
 
@@ -70,12 +70,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Detecting hazy images using hazer</h1>
 <h4 class="author"><em>Bijan Seyednasrollah</em></h4>
-<h4 class="date"><em>2018-10-31</em></h4>
+<h4 class="date"><em>2018-11-01</em></h4>
 
 
 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hazer)
-<span class="kw">library</span>(jpeg)</code></pre></div>
+<span class="kw">library</span>(jpeg)
+<span class="kw">library</span>(data.table)</code></pre></div>
 <p>This vignette exaplains how to 1) perform basic image procssing and 2) estimating image haziness as an indication of fog, cloud or other natural or artificial factors.</p>
 <p>Before I start the image processing steps, I show how to read and show and image.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#read the path to the example image</span>
@@ -190,16 +191,68 @@ contrast_mat &lt;-<span class="st"> </span><span class="kw">getContrast</span>(r
 <div id="image-fogginess-and-haziness" class="section level2">
 <h2>Image fogginess and haziness</h2>
 <p>Haziness of an image can be estimated using the <code>getHazeFactor</code> function. This function is based on the method described in <a href="https://www.omicsonline.org/open-access/detecting-foggy-images-and-estimating-the-haze-degree-factor-jcsb.1000226.pdf">Mao et al. (2014)</a>. The technique was originally developed to for “detecting foggy images and estimating the haze degree factor” for a wide range of outdoor images.</p>
-<p>The function returns a list of two numeric values: 1) haze as the haze degree and A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.</p>
+<p>The function returns a list of two numeric values: (1) haze as the haze degree and (2) A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#extracting the haze matrix</span>
 haze_degree &lt;-<span class="st"> </span><span class="kw">getHazeFactor</span>(rgb_array)
 
 <span class="kw">print</span>(haze_degree)
-<span class="co">#&gt; $haze</span>
-<span class="co">#&gt; [1] 0.2247816</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $A0</span>
-<span class="co">#&gt; [1] 0.7129889</span></code></pre></div>
+<span class="co">#&gt;      haze        A0 </span>
+<span class="co">#&gt; 0.2247816 0.7129889</span>
+<span class="co"># note that the values might be slightly differnt due to rounding errors on different platforms</span></code></pre></div>
+<div id="working-with-a-set-of-images" class="section level4">
+<h4>Working with a set of images</h4>
+<p>We can use <code>for</code> loops or the <code>lapply</code> functions to extract the haze values for a stack of images.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set up the input image</span>
+<span class="co"># images_dir &lt;- '/path/to/image/directory/'</span>
+
+<span class="co"># get a list of all .jpg files in the directory</span>
+pointreyes_images &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path =</span> images_dir, 
+                         <span class="dt">pattern =</span> <span class="st">'*.jpg'</span>,
+                         <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>, 
+                         <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+
+
+
+## 1) using a for loop
+<span class="co"># number of images</span>
+n &lt;-<span class="st"> </span><span class="kw">length</span>(pointreyes_images)
+
+<span class="co"># an empty matrix to fill with haze and A0 values</span>
+haze_mat &lt;-<span class="st"> </span><span class="kw">data.table</span>()
+
+pb &lt;-<span class="st"> </span><span class="kw">txtProgressBar</span>(<span class="dv">0</span>, n, <span class="dt">style =</span> <span class="dv">3</span>)
+
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
+  image_path &lt;-<span class="st"> </span>pointreyes_images[i]
+  img &lt;-<span class="st"> </span>jpeg<span class="op">::</span><span class="kw">readJPEG</span>(image_path)
+  haze &lt;-<span class="st"> </span><span class="kw">getHazeFactor</span>(img)
+  
+  haze_mat &lt;-<span class="st"> </span><span class="kw">rbind</span>(haze_mat, 
+                    <span class="kw">data.table</span>(<span class="dt">file =</span> image_path, 
+                               <span class="dt">haze =</span> haze[<span class="dv">1</span>], 
+                               <span class="dt">A0 =</span> haze[<span class="dv">2</span>]))
+  
+  <span class="kw">setTxtProgressBar</span>(pb, i)
+}
+
+
+haze_mat[haze<span class="op">&gt;</span><span class="fl">0.4</span>,foggy<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>]
+haze_mat[haze<span class="op">&lt;=</span><span class="fl">0.4</span>,foggy<span class="op">:</span><span class="er">=</span><span class="ot">FALSE</span>]
+
+haze_mat
+
+<span class="co"># move the foggy images to a new directory</span>
+foggy_dir &lt;-<span class="st">   '/path/to/foggy/images/directory/'</span>
+<span class="kw">file.copy</span>(haze_mat[foggy<span class="op">==</span><span class="ot">TRUE</span>,file], <span class="dt">to =</span> foggy_dir)
+<span class="kw">file.remove</span>(haze_mat[foggy<span class="op">==</span><span class="ot">TRUE</span>,file])
+
+## 1) using the lapply function
+<span class="co"># loading all the images as a list of arrays</span>
+img_list &lt;-<span class="st"> </span><span class="kw">lapply</span>(pointreyes_images, <span class="dt">FUN =</span> jpeg<span class="op">::</span>readJPEG)
+
+<span class="co"># getting the haze value for the list</span>
+haze_list &lt;-<span class="st"> </span><span class="kw">lapply</span>(img_list, <span class="dt">FUN =</span> getHazeFactor)</code></pre></div>
+</div>
 </div>
 
 
