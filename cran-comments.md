@@ -1,6 +1,6 @@
 ## Test environments
-* Ubuntu xenial 16.04.3 LTS, R version 3.4.1 (2017-06-30)
-* macOS High Sierra 10.13.3 (17D47), R version 3.4.2 (2017-09-28)
+* macOS Mojave 10.14: x86_64-apple-darwin15.6.0, R version 3.4.4 (2018-03-15), tested on 2018-11-01
+* Windows 7: x86_64_w64_mingw32, R version 3.4.3 (2017-11-30), tested on 2018-11-01
 
 ## R CMD check results
 R CMD check results
@@ -12,5 +12,4 @@ R CMD check --as-cran
 Status: 0 NOTE
 
 ## Dependencies
-This package extensively depends on the GDAL engine and rgdal, shiny and plotly R packages.
-Installing it from the GitHub repository may need manual installation of GDAL and other R packages.
+This package extensively depends on the jpeg R packages.
