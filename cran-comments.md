@@ -7,10 +7,7 @@
 R CMD check results
 0 errors | 0 warnings | 0 notes
 
-New submission
-
-R CMD check --as-cran
-Status: 0 NOTE
+R CMD check succeeded
 
 ## Dependencies
 This package extensively depends on the jpeg R packages.
