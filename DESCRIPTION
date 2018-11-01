@@ -10,7 +10,8 @@ Suggests:
     jpeg,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    data.table,
 License: AGPL-3 | file LICENSE 
 Encoding: UTF-8
 LazyData: true
