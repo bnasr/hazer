@@ -22,9 +22,13 @@ library(jpeg)
 library(data.table)
 ```
 
-This vignette exaplains how to 1) perform basic image procssing and 2) estimating image haziness as an indication of fog, cloud or other natural or artificial factors.
+This vignette explains how to 1) perform basic image processing and 2) estimate image haziness as an indication of fog, cloud or other natural or artificial factors using the `hazer`[^*] R package.
 
-Before I start the image processing steps, I show how to read and show and image.
+
+## Getting Started
+
+Before I start the image processing steps, I demonstrate how to read and show an image.
+
 ```{r read example, fig.show='hold', fig.height=5, fig.width=6.5}
 #read the path to the example image
 jpeg_file <- system.file(package = 'hazer', 'pointreyes.jpg')
@@ -39,6 +43,8 @@ plotRGBArray(rgb_array, bty = 'n', main = 'Point Reyes National Seashore')
 ```
 
 #### Histogram of the RGB channels
+Using the `stats::density` function, we can extract density distribution of each color channel.
+
 ```{r histogram, fig.show='hold', fig.height=5, fig.width=6.5}
 # color channels can be extracted from the matrix
 red_vector <- rgb_array[,,1]
@@ -57,9 +63,10 @@ lines(density(blue_vector), col = 'blue', lwd = 2)
 
 I show how to extract three basic elements of an RGB image using `hazer`:
 
-1- Extracting brightness of an image
-2- Extracting darkness of an image
-3- Extracting contrast of an image
+1. Brightness
+2. Darkness
+3. Contrast
+
 
 
 #### Brightness of an image
@@ -82,7 +89,7 @@ plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 # the main quantiles
 quantile(brightness_mat)
 
-#  here, we can show the histogram
+#  here, I can show the histogram
 par(mar=c(5,4,4,2))
 hist(brightness_mat)
 
@@ -96,21 +103,18 @@ Similarly, we can extract and show the darkness matrix using the `getDarkness` f
 #extracting the darkness matrix
 darkness_mat <- getDarkness(rgb_array)
 
-# unlike the RGB array which has 3 dimensions, the darkness matrix has only two 
-# dimensions and can be shown as a grayscale image,
-# we can do this using the same plotRGBArray function
-
+# the darkness matrix has also two dimensions and can be shown as a grayscale image
 par(mar=c(0,0,3,0))
-
 plotRGBArray(darkness_mat, bty = 'n', main = 'Darkness matrix')
 
 # each pixel in the darkness image is the minimum of the  R, G and B color channel
 
 # similarly, we can do some basic statistics
+
 # the main quantiles
 quantile(darkness_mat)
 
-#  here, we can show the histogram
+#  and the histogram
 par(mar=c(5,4,4,2))
 hist(darkness_mat)
 ```
@@ -123,28 +127,25 @@ The contrast of the image can quickly be extacted using the `getContrast` functi
 contrast_mat <- getContrast(rgb_array)
 
 # the contrast matrix has also two dimensions and can be shown as a grayscale image
-# we can do this using the same plotRGBArray function
-
 par(mar=c(0,0,3,0))
 
 plotRGBArray(contrast_mat, bty = 'n', main = 'Contrast matrix')
 
 # each pixel in the contrast image is the difference between the darkness and brightness matrices
 
-# similarly, we can do some basic statistics
 # the main quantiles
 quantile(contrast_mat)
 
-#  here, we can show the histogram
+#  and the histogram
 par(mar=c(5,4,4,2))
 hist(contrast_mat)
 ```
 
 
 ## Image fogginess and haziness
-Haziness of an image can be estimated using the `getHazeFactor` function. This function is based on the method described in <a href="https://www.omicsonline.org/open-access/detecting-foggy-images-and-estimating-the-haze-degree-factor-jcsb.1000226.pdf">Mao et al. (2014)</a>. The technique was originally developed to for "detecting foggy images and estimating the haze degree factor" for a wide range of outdoor images.
+Haziness of an image can be estimated using the `getHazeFactor` function. This function is based on the method described in <a href="https://www.omicsonline.org/open-access/detecting-foggy-images-and-estimating-the-haze-degree-factor-jcsb.1000226.pdf">Mao et al. (2014)</a>. The technique was originally developed to for __"detecting foggy images and estimating the haze degree factor"__ for a wide range of outdoor conditions.
 
-The function returns a list of two numeric values: (1) haze as the haze degree and (2) A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.
+The function returns a vector of two numeric values: (1) haze as the haze degree and (2) A0 as the global atmospheric light, as it is explained in the original paper. For the PhenoCam standards, we classify any image with the haze degree greater than 0.4 as a significantly foggy image.
 
 ```{r haze, fig.show='hold', fig.height=5, fig.width=6.5}
 #extracting the haze matrix
@@ -154,10 +155,13 @@ print(haze_degree)
 # note that the values might be slightly differnt due to rounding errors on different platforms
 ```
 
-#### Working with a set of images
-We can use `for` loops or the `lapply` functions to extract the haze values for a stack of images. 
+
+
+## Working with a set of images
+We can use `for` loops or the `lapply` functions to extract the haze values for a stack of images. You can download the related datasets from <a href="http://bit.ly/2F8w2Ia">here</a>. Download and extract the zip file to be used as input data for the followig step.
 
 ```{r, eval=FALSE}
+
 # set up the input image
 # images_dir <- '/path/to/image/directory/'
 
@@ -199,17 +203,21 @@ haze_mat
 
 # move the foggy images to a new directory
 foggy_dir <-   '/path/to/foggy/images/directory/'
+
 file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
 file.remove(haze_mat[foggy==TRUE,file])
 
-## 1) using the lapply function
+## 2) using the apply functions
 # loading all the images as a list of arrays
 img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
 
 # getting the haze value for the list
-haze_list <- lapply(img_list, FUN = getHazeFactor)
+haze_list <- t(sapply(img_list, FUN = getHazeFactor))
 
 
 ```
 
+
+
+[^*]: The R package is developed and maintained by <a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. Most recent release is available from: https://github.com/bnasr/hazer.
 

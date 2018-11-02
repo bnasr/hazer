@@ -52,7 +52,7 @@ plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 # the main quantiles
 quantile(brightness_mat)
 
-#  here, we can show the histogram
+#  here, I can show the histogram
 par(mar=c(5,4,4,2))
 hist(brightness_mat)
 
@@ -61,21 +61,18 @@ hist(brightness_mat)
 #extracting the darkness matrix
 darkness_mat <- getDarkness(rgb_array)
 
-# unlike the RGB array which has 3 dimensions, the darkness matrix has only two 
-# dimensions and can be shown as a grayscale image,
-# we can do this using the same plotRGBArray function
-
+# the darkness matrix has also two dimensions and can be shown as a grayscale image
 par(mar=c(0,0,3,0))
-
 plotRGBArray(darkness_mat, bty = 'n', main = 'Darkness matrix')
 
 # each pixel in the darkness image is the minimum of the  R, G and B color channel
 
 # similarly, we can do some basic statistics
+
 # the main quantiles
 quantile(darkness_mat)
 
-#  here, we can show the histogram
+#  and the histogram
 par(mar=c(5,4,4,2))
 hist(darkness_mat)
 
@@ -84,19 +81,16 @@ hist(darkness_mat)
 contrast_mat <- getContrast(rgb_array)
 
 # the contrast matrix has also two dimensions and can be shown as a grayscale image
-# we can do this using the same plotRGBArray function
-
 par(mar=c(0,0,3,0))
 
 plotRGBArray(contrast_mat, bty = 'n', main = 'Contrast matrix')
 
 # each pixel in the contrast image is the difference between the darkness and brightness matrices
 
-# similarly, we can do some basic statistics
 # the main quantiles
 quantile(contrast_mat)
 
-#  here, we can show the histogram
+#  and the histogram
 par(mar=c(5,4,4,2))
 hist(contrast_mat)
 
@@ -108,6 +102,7 @@ print(haze_degree)
 # note that the values might be slightly differnt due to rounding errors on different platforms
 
 ## ---- eval=FALSE---------------------------------------------------------
+#  
 #  # set up the input image
 #  # images_dir <- '/path/to/image/directory/'
 #  
@@ -149,15 +144,16 @@ print(haze_degree)
 #  
 #  # move the foggy images to a new directory
 #  foggy_dir <-   '/path/to/foggy/images/directory/'
+#  
 #  file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
 #  file.remove(haze_mat[foggy==TRUE,file])
 #  
-#  ## 1) using the lapply function
+#  ## 2) using the apply functions
 #  # loading all the images as a list of arrays
 #  img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
 #  
 #  # getting the haze value for the list
-#  haze_list <- lapply(img_list, FUN = getHazeFactor)
+#  haze_list <- t(sapply(img_list, FUN = getHazeFactor))
 #  
 #  
 
