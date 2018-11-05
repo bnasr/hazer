@@ -1,8 +1,10 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1008567.svg)](https://doi.org/10.5281/zenodo.1008567) 
+
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable) 
 [![Travis CI](https://travis-ci.org/bnasr/hazer.svg?branch=master)](https://travis-ci.org/bnasr/hazer) 
 [![Coverage status](https://codecov.io/gh/bnasr/hazer/branch/master/graph/badge.svg)](https://codecov.io/github/bnasr/hazer?branch=master) 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1008567.svg)](https://doi.org/10.5281/zenodo.1008567) 
+
 [![CRAN status](http://www.r-pkg.org/badges/version-last-release/hazer)](https://cran.r-project.org/package=hazer) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/hazer?color=brightgreen)](http://www.r-pkg.org/pkg/hazer) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/hazer?color=brightgreen)](http://www.r-pkg.org/pkg/hazer) 
