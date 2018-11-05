@@ -8,8 +8,7 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/hazer?color=brightgreen)](http://www.r-pkg.org/pkg/hazer) 
 
 
-# hazer
-## Identifying Foggy and Cloudy Images by Quantifying Hazeness
+# hazer: Identifying Foggy and Cloudy Images by Quantifying Hazeness
 
 The 'hazer' R pacakge provides a set of functions to estimate haziness of an image based on RGB bands. It returns a haze factor, varying from 0 to 1, a metric for fogginess and cloudiness. The package also presents additional functions to estimate brightness, darkness and contrast rasters of the RGB image. This package can be used for several applications such as inference of weather quality data and performing environmental studies from interpreting digital images.
 
