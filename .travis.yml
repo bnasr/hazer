@@ -1,14 +1,17 @@
 language: r
-sudo: required
-warnings_are_errors: false
-
-before_install:
-  - sudo apt-get update
-
-r_binary_packages:
+r:
+  - oldrel
+  - release
+  - devel
+sudo: false
 
 r_packages:
   - covr
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
+
+
+
+
+
