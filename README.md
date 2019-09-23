@@ -9,6 +9,7 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/hazer?color=brightgreen)](http://www.r-pkg.org/pkg/hazer) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/hazer?color=brightgreen)](http://www.r-pkg.org/pkg/hazer) 
 
+line to check git changes 
 
 # hazer: Identifying Foggy and Cloudy Images by Quantifying Hazeness
 
